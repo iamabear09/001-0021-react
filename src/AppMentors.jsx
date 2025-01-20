@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 export default function AppMentor() {
   const [person, setPerson] = useState({
@@ -40,11 +40,32 @@ export default function AppMentor() {
                   return {...mentor};
                 }
                 return {...mentor, name: current};
-              })}
+              })
+            }
           ));
         }}
       >
         멘토의 이름을 바꾸기
+      </button>
+      <button
+        onClick={() => {
+          const name = prompt(`멘토의 이름을 입력해주세요`);
+          const title = prompt(`멘토의 타이틀을 입력해 주세요`);
+          setPerson((person) => ({...person, mentors: [...person.mentors, {name, title}]}))
+        }}
+      >
+        멘토 추가하기
+      </button>
+      <button
+        onClick={() => {
+          const name = prompt(`삭제하고 싶은 멘토의 이름을 입력해주세요`);
+          setPerson((person) =>
+            ({...person,
+              mentors: person.mentors.filter((mentor) => mentor.name !== name)})
+          );
+        }}
+      >
+        멘토 삭제하기
       </button>
     </div>
   );
