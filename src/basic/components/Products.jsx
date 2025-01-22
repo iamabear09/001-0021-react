@@ -5,32 +5,30 @@ export default function Products() {
   const [checked, setChecked] = useState(false);
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(undefined);
 
   const handleChange = () => setChecked((prev) => !prev);
 
   useEffect(() => {
     setLoading(true);
+    setError(undefined);
 
     fetch(`data/${checked ? 'sale_' : ''}products.json`)
       .then((res) => res.json())
       .then((data) => {
         console.log('🔥뜨끈한 데이터를 네트워크에서 받아옴');
-        setLoading(false);
         setProducts(data);
       })
-      .catch((err) => {
-        setError(true);
-        setLoading(false);
-      });
+      .catch((err) => setError(`에러가 발생헀음!...: ${err}`))
+      .finally(() => setLoading(false));
 
     return () => {
       console.log('🧹 깨끗하게 청소하는 일들을 합니다.');
     };
   }, [checked]);
 
-  if (loading) return (<div>laoding...</div>);
-  if (error) return (<div>error 발생...</div>)
+  if (loading) return (<div>loading...</div>);
+  if (error) return (<div>{error}</div>)
 
   return (
     <>
